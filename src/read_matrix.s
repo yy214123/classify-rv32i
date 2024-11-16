@@ -76,7 +76,39 @@ read_matrix:
 
     # mul s1, t1, t2   # s1 is number of elements
     # FIXME: Replace 'mul' with your own implementation
+    li t5, 0
+    srli t3, t1, 31
+    srli t4, t2, 31
+    bne t3, t4, decrement_cumulatively
+accumulate:
+    srai t3, t1, 31
+    xor t1, t1, t3
+    sub t1, t1, t3
+    
+    srai t4, t2, 31
+    xor t2, t2, t4
+    sub t2, t2, t4
+    
+    add t5,t5,t1
+    addi t2, t2, -1
+    bne t2, zero, accumulate
+    j finish
+    
+decrement_cumulatively:
+    srai t3, t1, 31
+    xor t1, t1, t3
+    sub t1, t1, t3
+    
+    srai t4, t2, 31
+    xor t2, t2, t4
+    sub t2, t2, t4
+    
+    sub t5,t5,t1
+    addi t2, t2, -1
+    bne t2, zero, decrement_cumulatively
 
+finish:
+    mv s1, t5
     slli t3, s1, 2
     sw t3, 24(sp)    # size in bytes
 
