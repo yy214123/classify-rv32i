@@ -38,7 +38,9 @@ loop_start:
     bge t1, a2, loop_end
     # TODO: Add your own implementation
     lw t2, 0(a0)
+    beq t2, zero, next
     lw t3, 0(a1)
+    beq t3, zero, next
     
     srli t4, t2, 31
     srli t5, t3, 31
