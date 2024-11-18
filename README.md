@@ -79,3 +79,6 @@ FAILED (failures=2)
 > [commit 0c66e48](https://github.com/sysprog21/classify-rv32i/commit/0c66e48faa65c6e65d96dc27b5dda3f6f2922a24)
 #### Task 3: Classification
 > [commit 25eea7c](https://github.com/sysprog21/classify-rv32i/commit/25eea7c68a7cc3baffcfea392b697f0f748b3bb6)
+
+### TODO：Improve performance
+Currently, repeated addition/subtraction is used to replace mul. While it achieves the intended functionality, it results in excessive looping when handling larger numbers.
