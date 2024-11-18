@@ -1,6 +1,26 @@
 # Assignment 2: Classify
+After cloning this project, the first step is to execute the following:
+```shell
+$ bash tools/download_tools.sh
 
+Downloading Venus...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 11.0M  100 11.0M    0     0  2019k      0  0:00:05  0:00:05 --:--:-- 2790k
+Downloaded Venus!
+```
+Next, run the command:
+```shell
+$ java -jar tools/venus.jar . -dm
+```
+and open [Venus](https://venus.cs61c.org/) In the Venus web terminal, run:
+```shell
+$ mount local labs
+```
+> In your browser, you may see a prompt saying Key has been shown in the Venus mount server! Please copy and paste it into here.. You should be able to see a key in the most recent line of your local terminal output; just copy and paste it into the dialog.
 
+For more detailed steps and troubleshooting, please refer to [Lab 3: RISC-V, Venus](https://cs61c.org/fa24/labs/lab03/).<br>
+___
 This project corresponds to [Assignment 2](https://hackmd.io/@sysprog/2024-arch-homework2) of the Computer Architecture course offered by NCKU CSIE. It is divided into two main parts:<br> 
 * **Part A - Mathematical Functions**
 * **Part B - File Operations**
