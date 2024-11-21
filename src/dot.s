@@ -35,7 +35,8 @@ dot:
     blt a4, t0, error_terminate  
 
     li t0, 0            
-    li t1, 0         
+    li t1, 0
+    li a7, 0         
 
 loop_start:
     bge t1, a2, loop_end
@@ -56,37 +57,38 @@ loop_start:
     and t4, t3, t4
     beq t4, zero, call_power_of_2_t3
     
-    srli t4, t2, 31
-    srli t5, t3, 31
-    bne t4, t5, decrement_cumulatively
     
-accumulate:
-    srai t4, t2, 31
-    xor t2 ,t2 ,t4
-    sub t2, t2, t4
-    
-    srai t5, t3, 31
-    xor t3 ,t3 ,t5
+shift_mul:
+    srai t4, t2, 31       
+    xor t2, t2, t4        
+    sub t2, t2, t4        
+
+    srai t5, t3, 31       
+    xor t3, t3, t5       
     sub t3, t3, t5
+
+    xor t6, t4, t5        
+
     
-    add t0,t0,t2
-    addi t3, t3, -1
-    bne t3, zero, accumulate
-    j next
-    
-decrement_cumulatively:
-    srai t4, t2, 31
-    xor t2 ,t2 ,t4
-    sub t2, t2, t4
-    
-    srai t5, t3, 31
-    xor t3 ,t3 ,t5
-    sub t3, t3, t5
-    
-    sub t0,t0,t2
-    addi t3, t3, -1
-    bne t3, zero, decrement_cumulatively
-    j next
+    li t0, 0              
+    li t4, 0              
+
+loop_shift:
+    andi t5, t3, 1        
+    beq t5, zero, skip_add 
+
+    sll t5, t2, t4        
+    add t0, t0, t5        
+
+skip_add:
+    srli t3, t3, 1        
+    addi t4, t4, 1        
+    bne t3, zero, loop_shift
+
+    xor t0, t0, t6        
+    sub t0, t0, t6        
+    add a7, a7, t0
+    j next              
     
 call_power_of_2_t2:
     mv   a5, t2
@@ -95,8 +97,7 @@ call_power_of_2_t2:
 
 call_power_of_2_t3:
     mv   a5, t3
-    mv   a6, t2     
-    j  power_of_2_bitwise    
+    mv   a6, t2      
 
 power_of_2_bitwise:
     # log a5 (Harley's algorithm)
@@ -110,6 +111,7 @@ power_of_2_bitwise:
     or   a5, a5, t4   
     srli t4, a5, 16   
     or   a5, a5, t4
+    
     slli t4, a5, 3    
     sub  a5, t4, a5   
     slli t4, a5, 8    
@@ -118,13 +120,14 @@ power_of_2_bitwise:
     sub  a5, t4, a5   
     slli t4, a5, 8    
     sub  a5, t4, a5
+    
     srli t4, a5, 26     
     la   t5, Table    
     add  t5, t5, t4   
     lb  a5, 0(t5)
 
     sll  a6, a6, a5
-    add t0, t0, a6
+    add a7, a7, a6
     j next
     
 next:    
@@ -137,7 +140,7 @@ next:
     j loop_start
     
 loop_end:
-    mv a0, t0
+    mv a0, a7
     jr ra
 
 error_terminate:
